@@ -22,12 +22,14 @@ use Mindy\Base\Exception\Exception;
 use Mindy\Base\Mindy;
 use Mindy\Helper\Traits\Accessors;
 use Mindy\Helper\Traits\Configurator;
+use Mindy\Orm\TreeModel;
 
 
 abstract class Sitemap
 {
     use Accessors, Configurator;
 
+    public $nameColumn = 'name';
     /**
      * @var \Mindy\Base\UrlManager
      */
@@ -51,7 +53,7 @@ abstract class Sitemap
     public function getModel()
     {
         $modelClass = $this->getModelClass();
-        return new $modelClass;
+        return $modelClass ? new $modelClass : null;
     }
 
     /**
@@ -68,6 +70,24 @@ abstract class Sitemap
                 'changefreq' => $this->getChangeFreq($data),
                 'priority' => $this->getPriority($data)
             ]
+        ];
+    }
+
+    /**
+     * Generate html
+     * @param $data array
+     * @param $level
+     * @return array
+     */
+    public function generateHtml($data, $level = 0)
+    {
+        if (is_subclass_of($this->getModel(), TreeModel::className()) && isset($data['level'])) {
+            $level = $data['level'] - 1;
+        }
+        return [
+            'url' => $this->wrapAbsoluteUrl($this->getLoc($data)),
+            'name' => $this->getName($data),
+            'level' => $level
         ];
     }
 
@@ -170,6 +190,14 @@ abstract class Sitemap
         }
     }
 
+    public function getName($data)
+    {
+        if (isset($data[$this->nameColumn])) {
+            return $data[$this->nameColumn];
+        }
+        return $this->getLoc($data);
+    }
+
     /**
      * Return query set object
      * @return \Mindy\Orm\QuerySet
@@ -206,6 +234,28 @@ abstract class Sitemap
             }
         }
         return Xml::encode('urlset', $data, YII_DEBUG);
+    }
+
+    /**
+     * Return data object with sitemap content for html view
+     * @return string
+     */
+    public function getHtmlData()
+    {
+        $data = [];
+        $extra = $this->getExtraItems();
+        foreach ($extra as $item) {
+            $data[] = $this->generateHtml($item);
+        }
+
+        $qs = $this->getQuerySet();
+        if ($qs) {
+            $models = $qs->asArray(true)->all();
+            foreach ($models as $item) {
+                $data[] = $this->generateHtml($item);
+            }
+        }
+        return $data;
     }
 
     /**

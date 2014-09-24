@@ -1,0 +1,15 @@
+{% extends 'sitemap/base.html' %}
+
+{% block content %}
+    <ul>
+        {% for sitemap in sitemaps %}
+            {% for item in sitemap.htmlData %}
+                <li style="padding-left: {{ 10 * item.level }}px">
+                    <a href="{{ item.url }}">
+                        {{ item.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -44,4 +44,11 @@ class SitemapController extends CoreController
         $sitemaps = Mindy::app()->getModule('sitemap')->getSitemaps();
         return isset($sitemaps[$name]) ? $sitemaps[$name] : null;
     }
+
+    public function actionHtml()
+    {
+        echo $this->render('sitemap/index.html', [
+            'sitemaps' => Mindy::app()->getModule('sitemap')->getSitemaps()
+        ]);
+    }
 }

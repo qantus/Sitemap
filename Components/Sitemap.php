@@ -164,7 +164,7 @@ abstract class Sitemap
     {
         $model = $this->getModel();
         if (method_exists($model, 'getAbsoluteUrl')) {
-            return Mindy::app()->request->getHostInfo() . '/' . ltrim($model->getAbsoluteUrl(), '/');
+            return rtrim(Mindy::app()->request->http->getHostInfo(), '/') . '/' . ltrim($model->getAbsoluteUrl(), '/');
         } else {
             throw new Exception("Method getLoc not implemented in class " . get_class($this));
         }
@@ -214,7 +214,8 @@ abstract class Sitemap
 
     protected function wrapAbsoluteUrl($url)
     {
-        $absHost = Mindy::app()->request->getHostInfo();
+        $absHost = rtrim(Mindy::app()->request->http->getHostInfo(), '/');
+        $url = ltrim($url, '/');
         return $absHost ? $absHost . '/' . $url : $url;
     }
 }

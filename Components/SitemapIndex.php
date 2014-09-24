@@ -38,7 +38,7 @@ class SitemapIndex implements ISitemapIndex
         foreach ($this->sitemaps as $name => $sitemap) {
             $data[] = [
                 'sitemap' => [
-                    'loc' => Mindy::app()->request->getHostInfo() . '/sitemap-' . ltrim($name, '/') . '.xml',
+                    'loc' => Mindy::app()->request->http->getHostInfo() . '/sitemap-' . ltrim($name, '/') . '.xml',
                     'lastmod' => date(DATE_W3C)
                 ]
             ];

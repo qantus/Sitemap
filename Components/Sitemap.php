@@ -76,18 +76,14 @@ abstract class Sitemap
     /**
      * Generate html
      * @param $data array
-     * @param $level
      * @return array
      */
-    public function generateHtml($data, $level = 0)
+    public function generateHtml($data)
     {
-        if (is_subclass_of($this->getModel(), TreeModel::className()) && isset($data['level'])) {
-            $level = $data['level'] - 1;
-        }
         return [
             'url' => $this->wrapAbsoluteUrl($this->getLoc($data)),
             'name' => $this->getName($data),
-            'level' => $level
+            'level' => $this->getLevel($data)
         ];
     }
 
@@ -190,12 +186,32 @@ abstract class Sitemap
         }
     }
 
+    /**
+     * For Html View
+     * @param $data
+     * @return string
+     */
     public function getName($data)
     {
         if (isset($data[$this->nameColumn])) {
             return $data[$this->nameColumn];
         }
         return $this->getLoc($data);
+    }
+
+    /**
+     * Zero-based level for align in Html View
+     * @param $data
+     * @return int
+     */
+    public function getLevel($data)
+    {
+        $level = 0;
+        // For tree view
+        if (is_subclass_of($this->getModel(), TreeModel::className()) && isset($data['level'])) {
+            $level = $data['level'] - 1;
+        }
+        return $level;
     }
 
     /**

@@ -193,11 +193,25 @@ abstract class Sitemap
             ]
         ];
 
+        $extra = $this->getExtraItems();
+        foreach ($extra as $item) {
+            $data[] = $this->generateXml($item);
+        }
+
         $models = $this->getQuerySet()->asArray(true)->all();
         foreach ($models as $item) {
             $data[] = $this->generateXml($item);
         }
         return Xml::encode('urlset', $data, YII_DEBUG);
+    }
+
+    /**
+     * Returns extra items, not included to QuerySet (ex: root of a catalog, root of FAQ)
+     * @return array
+     */
+    public function getExtraItems()
+    {
+        return [];
     }
 
     /**

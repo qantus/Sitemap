@@ -198,9 +198,12 @@ abstract class Sitemap
             $data[] = $this->generateXml($item);
         }
 
-        $models = $this->getQuerySet()->asArray(true)->all();
-        foreach ($models as $item) {
-            $data[] = $this->generateXml($item);
+        $qs = $this->getQuerySet();
+        if ($qs) {
+            $models = $qs->asArray(true)->all();
+            foreach ($models as $item) {
+                $data[] = $this->generateXml($item);
+            }
         }
         return Xml::encode('urlset', $data, YII_DEBUG);
     }

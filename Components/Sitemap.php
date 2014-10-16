@@ -18,7 +18,7 @@ namespace Modules\Sitemap\Components;
 use DateTime;
 use Mindy\Helper\Xml;
 
-use Mindy\Base\Exception\Exception;
+use Mindy\Exception\Exception;
 use Mindy\Base\Mindy;
 use Mindy\Helper\Traits\Accessors;
 use Mindy\Helper\Traits\Configurator;
@@ -139,7 +139,7 @@ abstract class Sitemap
     /**
      * @param $value
      * @return bool|string
-     * @throws \Mindy\Base\Exception\Exception
+     * @throws \Mindy\Exception\Exception
      */
     protected function formatLastMod($value)
     {
@@ -173,7 +173,7 @@ abstract class Sitemap
      * Parent tag for each URL entry. The remaining tags are children of this tag.
      *
      * @param $data
-     * @throws \Mindy\Base\Exception\Exception
+     * @throws \Mindy\Exception\Exception
      * @return string
      */
     public function getLoc($data)

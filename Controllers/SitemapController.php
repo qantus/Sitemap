@@ -18,6 +18,7 @@ namespace Modules\Sitemap\Controllers;
 use Mindy\Base\Mindy;
 use Modules\Core\Controllers\CoreController;
 use Modules\Sitemap\Components\SitemapIndex;
+use Modules\Sitemap\SitemapModule;
 
 
 class SitemapController extends CoreController
@@ -47,6 +48,11 @@ class SitemapController extends CoreController
 
     public function actionHtml()
     {
+        if (!$this->getModule()->enableHtmlVersion) {
+            $this->error(404);
+        }
+        $this->addTitle(SitemapModule::t('Sitemap'));
+        $this->addBreadcrumb(SitemapModule::t('Sitemap'));
         echo $this->render('sitemap/index.html', [
             'sitemaps' => Mindy::app()->getModule('sitemap')->getSitemaps()
         ]);

@@ -50,6 +50,11 @@ abstract class Sitemap
         return $this->urlManager->reverse($name, $params);
     }
 
+    public function getModule()
+    {
+        return $this->getModel()->getModule();
+    }
+
     public function getModel()
     {
         $modelClass = $this->getModelClass();
@@ -186,6 +191,14 @@ abstract class Sitemap
         }
     }
 
+    public function getSitemapName()
+    {
+        $model = $this->getModel();
+        $module = $model->getModule();
+        $name = $module->t($model->classNameShort());
+        return $name;
+    }
+
     /**
      * For Html View
      * @param $data
@@ -265,11 +278,9 @@ abstract class Sitemap
         }
 
         $qs = $this->getQuerySet();
-        if ($qs) {
-            $models = $qs->asArray(true)->all();
-            foreach ($models as $item) {
-                $data[] = $this->generateHtml($item);
-            }
+        $models = $qs->asArray(true)->all();
+        foreach ($models as $item) {
+            $data[] = $this->generateHtml($item);
         }
         return $data;
     }

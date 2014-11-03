@@ -19,6 +19,8 @@ use Mindy\Helper\Alias;
 
 class SitemapModule extends Module
 {
+    public $enableHtmlVersion = false;
+
     public $sitemaps = [];
 
     public function getSitemaps()

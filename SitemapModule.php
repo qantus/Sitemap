@@ -27,7 +27,9 @@ class SitemapModule extends Module
     {
         if(empty($this->sitemaps)) {
             $path = Alias::get('application.config.sitemaps') . '.php';
-            $this->sitemaps = include_once($path);
+            if (is_file($path)) {
+                $this->sitemaps = include_once($path);
+            }
         }
         return $this->sitemaps;
     }

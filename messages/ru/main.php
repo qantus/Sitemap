@@ -1,5 +1,5 @@
 <?php
 
-return [
-    'Sitemap' => 'Карта сайта'
-];
+return array (
+  'Sitemap' => 'Карта сайта',
+);

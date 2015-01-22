@@ -278,9 +278,11 @@ abstract class Sitemap
         }
 
         $qs = $this->getQuerySet();
-        $models = $qs->asArray(true)->all();
-        foreach ($models as $item) {
-            $data[] = $this->generateHtml($item);
+        if ($qs) {
+            $models = $qs->asArray(true)->all();
+            foreach ($models as $item) {
+                $data[] = $this->generateHtml($item);
+            }
         }
         return $data;
     }
@@ -301,7 +303,7 @@ abstract class Sitemap
     public function render($header = true)
     {
         if ($header) {
-            header("Content-Type: text/xml");
+            //header("Content-Type: text/xml");
         }
         return $this->getXml();
     }

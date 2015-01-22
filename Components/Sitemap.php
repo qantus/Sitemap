@@ -303,7 +303,7 @@ abstract class Sitemap
     public function render($header = true)
     {
         if ($header) {
-            //header("Content-Type: text/xml");
+            header("Content-Type: text/xml");
         }
         return $this->getXml();
     }
